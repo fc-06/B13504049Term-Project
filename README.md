@@ -22,10 +22,13 @@ source mazeescape-env\Scripts\activate
 -On macOS/Linux:
 source mazeescape-env/bin/activate
 
+
 安裝pygame、random、time
 
 pip install pygame
+
 pip install random
+
 pip install time
 
 ### 2. 開始遊戲
@@ -43,13 +46,14 @@ pip install time
 
 玩家起始玩家起始健康值:50、水:100、食物:100、木頭:20、石頭:20
 每日基礎消耗水-3、食物-3
+
 每回合可選一行動執行(按鍵盤按鍵)
-A:增加20食物
-B:增加20水
-C:增加10木頭
-D:增加5木頭
-E:若木頭數量大於10，消耗10木頭，增加健康值5
-F:若石頭數量大於15，消耗15木頭，增加健康值10
+1. 增加20食物
+2. 增加20水
+3. 增加10木頭
+4. 增加5石頭
+5.若木頭數量大於10，消耗10木頭，增加健康值5
+6. 若石頭數量大於15，消耗15木頭，增加健康值10
 
 遊戲結束條件:水或食物或健康值<或=0
 出現結束畫面並出現結束畫面並顯示玩家生存天數
@@ -73,44 +77,49 @@ F:若石頭數量大於15，消耗15木頭，增加健康值10
 ## 四、	開發過程
 
 1.因為首次使用pygame因此大架構使用ChatGPT的協助
-2.發現程式並非可以每天執行動作，而是像影片般播放，自己產生隨機事件，直至遊戲結束
-3.我增加了每回合需要按鍵執行動作才能進入下一回合的程式
-def wait_for_action():
-    waiting_text = font.render("Press any key to continue to the next round...", True, BLACK)
-    screen.blit(waiting_text, (SCREEN_WIDTH // 2 - 180, SCREEN_HEIGHT // 2 + 60))
-    pygame.display.update()
-    
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            if event.type == pygame.KEYDOWN:
-                waiting = False
-    return True
-4.然而數字鍵無法執行動作，不論是右方還是上方的，在遊戲中按了都無反應，換了電腦依然如此，因此我改用字母鍵來執行
-def player_action():
-    global food, water, wood, stone, health, day_count, game_over
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_a]: 
-        food += 20
-    if keys[pygame.K_b]: 
-        water += 20
-    if keys[pygame.K_c]:  
-        wood += 10
-    if keys[pygame.K_d]:  
-        stone += 5
-    if keys[pygame.K_e]:  
-        if wood >= 10:
-            wood -= 10
-            health += 5
-    if keys[pygame.K_f]:  
-        if stone >= 15:
-            stone -= 15
-            health += 10
+2.發現程式並非可以每天執行動作，而是像影片般播放，自己產生隨機事件，直至遊戲結束
+
+3.我增加了每回合需要按鍵執行動作才能進入下一回合的程式
+
+    def wait_for_action():
+        waiting_text = font.render("Press any key to continue to the next round...", True, BLACK)
+        screen.blit(waiting_text, (SCREEN_WIDTH // 2 - 180, SCREEN_HEIGHT // 2 + 60))
+        pygame.display.update()
+        
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return False
+                if event.type == pygame.KEYDOWN:
+                    waiting = False
+        return True
+4.然而數字鍵無法執行動作，不論是右方還是上方的，在遊戲中按了都無反應，換了電腦依然如此，因此我改用字母鍵來執行
+
+    def player_action():
+        global food, water, wood, stone, health, day_count, game_over
+    
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]: 
+            food += 20
+        if keys[pygame.K_b]: 
+            water += 20
+        if keys[pygame.K_c]:  
+            wood += 10
+        if keys[pygame.K_d]:  
+            stone += 5
+        if keys[pygame.K_e]:  
+            if wood >= 10:
+                wood -= 10
+                health += 5
+        if keys[pygame.K_f]:  
+            if stone >= 15:
+                stone -= 15
+                health += 10
 
 5.在各種測試下調整遊戲難度
+
 6.增加計分功能，並能自動關閉頁面
 
 ## 五、	參考資料來源
@@ -118,6 +127,7 @@ def player_action():
 ChatGPT:https://chatgpt.com/
 ### 1.主題發想
 Q:我想寫一個有一定難度的python程式，有甚麼主題提案
+
 A:以下是一些較有挑戰性的 Python 程式設計主題，這些題目不僅能幫助你提升編程技能，還能涵蓋許多實際的應用場景：
 ...生存遊戲...
 ### 2.如何使用pygame顯示遊戲介面
